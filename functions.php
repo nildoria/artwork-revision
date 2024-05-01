@@ -609,11 +609,6 @@ function send_data_to_webhook($proof_status, $customer_name, $customer_email, $o
         'orderId' => $order_number,
         'postURL' => $post_url
     );
-    // if $post_url contains .test or localhost then don't send webhook. While in Development mode. 
-    //TODO: Remove this
-    if (strpos($post_url, '.test') !== false || strpos($post_url, 'localhost') !== false) {
-        return;
-    }
 
     $response = wp_remote_post(
         'https://hook.eu1.make.com/ws02h18kcpzq7sfvit8ruh3dkx6q4cd7',

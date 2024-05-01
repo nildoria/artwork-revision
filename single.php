@@ -15,7 +15,7 @@ get_header();
             ?>
             <div class="revision--product-title">
                 <h3>
-                    Mockup Revision for
+                    הדמיות להזמנה מספר
                     <?php the_title(); ?>
                 </h3>
             </div>
@@ -49,27 +49,26 @@ get_header();
                 if (!$approved_proof) {
                     ?>
                     <div class="revision--product-artwork-buttons">
-                        <button type="button" class="btn pre-approval-btn">Approve</button>
+                        <button type="button" class="btn pre-approval-btn">לחצו לאישור</button>
                         <div class="request-changes">
-                            <span>or</span> <a class="request-changes-trigger" href="#">Request changes</a>
+                            <span>או</span> <a class="request-changes-trigger" href="#">שתבקשו שינויים</a>
                         </div>
                     </div>
                     <div id="mockup-approval-modal" class="white-popup-block mfp-hide">
                         <div class="approval-review-content">
-                            <h2>Please review carefully</h2>
-                            <p>Changes cannot be made after approval. Approved orders cannot be canceled.</p>
+                            <h2>האישור הוא סופי</h2>
+                            <p>שינויים לא יוכלו להתבצע לאחר אישורכם</p>
                         </div>
                         <button type="button" class="btn ml_add_loading approval-btn"
-                            data-post-id="<?php echo get_the_ID(); ?>">Start
-                            production</button>
+                            data-post-id="<?php echo get_the_ID(); ?>">מאושר להדפסה 🥳</button>
                         <div class="request-changes">
-                            <span>or</span> <a class="request-changes-trigger" href="#">Request changes</a>
+                            <span>או</span> <a class="request-changes-trigger" href="#">שתבקשו שינויים</a>
                         </div>
                     </div>
                     <div id="mockup-comment-submission-modal" class="">
                         <div class="approval-review-content">
-                            <h2>Thanks for your revision</h2>
-                            <p>Our team will review it and send new mockups within the next 24 hours.</p>
+                            <h2>תודה רבה על הפידבק.</h2>
+                            <p>הסטודיו שלנו יעבור על הערותיכם והדמיות חדשות יישלחו תוך 24 שעות.</p>
                         </div>
                     </div>
                     <?php
@@ -77,7 +76,7 @@ get_header();
                     ?>
                     <div class="proof-approved-title revision--product-title">
                         <h3>
-                            Mockup Approved Successfully!
+                            ההדמיות אושרו בהצלחה!
                         </h3>
                     </div>
                     <?php
@@ -95,7 +94,7 @@ get_header();
                         </div>
                         <div class="artwork-revision-upload-new fileUpload-trick">
                             <button id="uploadbrowsebutton">
-                                <i class="fa fa-paperclip" aria-hidden="true"></i>...ץבוק רחב
+                                <i class="fa fa-paperclip" aria-hidden="true"></i>העלו קובץ...
                             </button>
                             <textarea id="custom-comment-text" name="custom-comment-text" rows="5" cols="50"
                                 allowhtml="true"></textarea>
@@ -113,8 +112,8 @@ get_header();
                     </div>
 
                     <div class="submit-feedback-btn-set">
-                        <button class="btn ml_add_loading mockup-submit-feedback" type="submit">Submit feedback</button>
-                        <span>or</span> <a class="cancel-feedback-request" href="#">Cancel</a>
+                        <button class="btn ml_add_loading mockup-submit-feedback" type="submit">שלחו את הבקשה</button>
+                        <span>או</span> <a class="cancel-feedback-request" href="#">לחצו לביטול</a>
                     </div>
                 </form>
 
@@ -122,7 +121,7 @@ get_header();
             }
             ?>
             <div class="mockup-revision-activity-container">
-                <h4>Revision History</h4>
+                <h4>היסטוריית שינויים</h4>
                 <div class="revision-activities-all">
                     <?php
                     if ($approved_proof) {
@@ -137,9 +136,9 @@ get_header();
                                     <span></span>
                                 </div>
                                 <div class="revision-activity-description">
-                                    <span class="revision-comment-title">Proofs approved by the client <img
+                                    <span class="revision-comment-title">ההדמיות אושרו על ידי הלקוח <img
                                             src="<?php echo get_template_directory_uri() ?>/assets/images/mark_icon-svg.svg"
-                                            alt=""></span>
+                                            alt=""></span></span>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +157,7 @@ get_header();
 
                             $comment_date = '';
                             if (isset($comment['artwork_comment_date']) && !empty($comment['artwork_comment_date'])) {
-                                $comment_date = date_i18n(get_option('date_format') . ' \a\t ' . get_option('time_format'), strtotime($comment['artwork_comment_date']));
+                                $comment_date = date_i18n(get_option('date_format') . ' \ב- ' . get_option('time_format'), strtotime($comment['artwork_comment_date']));
                             }
 
                             $image_html = '';
@@ -199,7 +198,7 @@ get_header();
                                     </div>
                                     <div class="revision-activity-description">
                                         <span class="revision-comment-title">
-                                            <?php echo $comment_name === 'AllAround' ? 'Created Proof' : 'Rejected with comment:'; ?>
+                                            <?php echo $comment_name === 'AllAround' ? 'הדמיה הועלתה' : 'ההערות הבאות נוספו:'; ?>
                                         </span>
                                         <?php echo $image_html; ?>
                                         <div>

@@ -471,7 +471,7 @@ button:focus,
 [type="button"]:hover,
 [type="button"]:focus {
   color: #ffffff;
-  background-color: #cc3366;
+  background-color: transparent;
   text-decoration: none;
 }
 button:not(:disabled),
