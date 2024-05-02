@@ -133,7 +133,18 @@ get_header();
                             <div class="revision-activity-content">
                                 <div class="revision-activity-title">
                                     <h5>AllAround</h5>
-                                    <span></span>
+                                    <span>
+                                        <?php
+                                        $proof_approved_time = get_post_meta(get_the_ID(), 'proof_approved_time', true);
+
+                                        if (isset($proof_approved_time) && !empty($proof_approved_time)) {
+                                            $approval_date = date_i18n(get_option('date_format') . ' \ב- ' . get_option('time_format'), strtotime($proof_approved_time));
+                                            echo $approval_date;
+                                        } else {
+                                            echo '';
+                                        }
+                                        ?>
+                                    </span>
                                 </div>
                                 <div class="revision-activity-description">
                                     <span class="revision-comment-title">ההדמיות אושרו על ידי הלקוח <img

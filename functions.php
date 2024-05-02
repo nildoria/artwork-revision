@@ -610,6 +610,20 @@ function send_data_to_webhook($proof_status, $customer_name, $customer_email, $o
         'postURL' => $post_url
     );
 
+    // if $post_url contains .test or localhost then don't send webhook. While in Development mode. 
+    //TODO: Remove this
+    if (strpos($post_url, '.test') !== false || strpos($post_url, 'localhost') !== false || strpos($post_url, 'lukpaluk.xyz') !== false) {
+
+        $response = wp_remote_post(
+            'https://hook.us1.make.com/yb3erk9vt5yyidhjshwbc3er37pd9jas',
+            array(
+                'body' => json_encode($data),
+                'headers' => array('Content-Type' => 'application/json'),
+            )
+        );
+        return;
+    }
+
     $response = wp_remote_post(
         'https://hook.eu1.make.com/ws02h18kcpzq7sfvit8ruh3dkx6q4cd7',
         array(
@@ -686,6 +700,8 @@ function submit_custom_comment()
     // Get the comment text from the AJAX request and replace line breaks with HTML <br> tags
     $comment_text = isset($_POST['comment_text']) ? wp_kses_post($_POST['comment_text']) : '';
     $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+    // Get the post URL
+    $post_url = get_permalink($post_id);
 
     if ($comment_text && $post_id) {
         $uploaded_file_urls = array();
@@ -740,13 +756,25 @@ function submit_custom_comment()
                 'uploadedFileURL' => $uploaded_file_urls
             );
 
-            $response = wp_remote_post(
-                'https://hook.eu1.make.com/ws02h18kcpzq7sfvit8ruh3dkx6q4cd7',
-                array(
-                    'body' => json_encode($data),
-                    'headers' => array('Content-Type' => 'application/json'),
-                )
-            );
+            // if $post_url contains .test or localhost then don't send webhook. While in Development mode. 
+            //TODO: Remove this
+            if (strpos($post_url, '.test') !== false || strpos($post_url, 'localhost') !== false || strpos($post_url, 'lukpaluk.xyz') !== false) {
+                $response = wp_remote_post(
+                    'https://hook.us1.make.com/yb3erk9vt5yyidhjshwbc3er37pd9jas',
+                    array(
+                        'body' => json_encode($data),
+                        'headers' => array('Content-Type' => 'application/json'),
+                    )
+                );
+            } else {
+                $response = wp_remote_post(
+                    'https://hook.eu1.make.com/ws02h18kcpzq7sfvit8ruh3dkx6q4cd7',
+                    array(
+                        'body' => json_encode($data),
+                        'headers' => array('Content-Type' => 'application/json'),
+                    )
+                );
+            }
 
             if (!empty($uploaded_file_urls) && pathinfo($uploaded_file_urls, PATHINFO_EXTENSION) === 'pdf') {
                 $data['uploadedFileURL'] = get_template_directory_uri() . '/assets/images/pdf-icon.svg';
@@ -777,12 +805,15 @@ function mockup_proof_approve()
     // Get customer name from post meta
     $customer_name = get_post_meta($post_id, 'customer_name', true);
     $order_id = get_post_meta($post_id, 'order_number', true);
+    // Get the post URL
+    $post_url = get_permalink($post_id);
 
     if ($post_id) {
         // Check if the approval button is clicked
         if (isset($_POST['approve']) && $_POST['approve'] === 'true') {
             // Update ACF post meta approved_proof to true
             update_field('approved_proof', true, $post_id);
+            update_post_meta($post_id, 'proof_approved_time', current_time('mysql'));
 
             $data = array(
                 'customerName' => $customer_name,
@@ -790,13 +821,25 @@ function mockup_proof_approve()
                 'proofStatus' => 'Approved'
             );
 
-            $response = wp_remote_post(
-                'https://hook.eu1.make.com/ws02h18kcpzq7sfvit8ruh3dkx6q4cd7',
-                array(
-                    'body' => json_encode($data),
-                    'headers' => array('Content-Type' => 'application/json'),
-                )
-            );
+            // if $post_url contains .test or localhost then don't send webhook. While in Development mode. 
+            //TODO: Remove this
+            if (strpos($post_url, '.test') !== false || strpos($post_url, 'localhost') !== false || strpos($post_url, 'lukpaluk.xyz') !== false) {
+                $response = wp_remote_post(
+                    'https://hook.us1.make.com/yb3erk9vt5yyidhjshwbc3er37pd9jas',
+                    array(
+                        'body' => json_encode($data),
+                        'headers' => array('Content-Type' => 'application/json'),
+                    )
+                );
+            } else {
+                $response = wp_remote_post(
+                    'https://hook.eu1.make.com/ws02h18kcpzq7sfvit8ruh3dkx6q4cd7',
+                    array(
+                        'body' => json_encode($data),
+                        'headers' => array('Content-Type' => 'application/json'),
+                    )
+                );
+            }
 
             if (is_wp_error($response)) {
                 wp_send_json_error('Error sending data to webhook: ' . $response->get_error_message());
